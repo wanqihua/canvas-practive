@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>wave</title>
+  <style>
+    #canvas {
+      width: 100%;
+      height: 200px;
+      display: block;
+      color: #3388ff;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+<script>
+  window.addEventListener('load',function(){
+    draw();
+  },false);
+  let glo = {
+    canvasWidth: '',
+    canvasHeight: '',
+    canvas: '',
+    xOffset: 0,
+    speed:  0.1,
+    ctx: '',
+  };
+
+  function draw(){
+    glo.canvas = document.getElementById('canvas');
+    let ctx = glo.canvas.getContext('2d');
+    glo.ctx = ctx;
+    glo.canvasWidth = glo.canvas.width;
+    glo.canvasHeight = glo.canvas.height;
+    ctx.fillStyle = 'rgba(0,141,255,.8)';
+    ctx.strokeStyle = 'transparent';
+//    requestAnimationFrame(drawFrame.bind(this, glo.canvas));
+    drawFrame();
+  }
+
+  // 使用 requestAnimationFrame API 实现动画
+  function drawFrame(){
+    glo.ctx.clearRect(0, 0, glo.canvas.width, glo.canvas.height);
+    drawSin(glo.ctx, glo.xOffset);
+    glo.xOffset += glo.speed;
+    requestAnimationFrame(drawFrame.bind(glo.canvas));
+  }
+
+  // 曲线绘制
+  function drawSin(ctx ,xOffset) {
+    const canvasWidth = glo.canvasWidth;
+    const canvasHeight = glo.canvasHeight;
+    const startX = 0;
+    const waveWidth = 0.05; // 波浪宽度, 数越小越宽
+    const waveHeight = 20;  // 波浪高度, 数越大越高
+    ctx.beginPath();
+    for (let x = startX; x < startX + canvasWidth; x += 20 / canvasWidth) {
+      const y = waveHeight * Math.sin((startX + x) * waveWidth + xOffset);
+      ctx.lineTo(x, (canvasHeight / 2) + y);
+    }
+    ctx.lineTo(Number(canvasWidth), Number(canvasHeight));
+    ctx.lineTo(startX, Number(canvasHeight));
+    ctx.closePath();
+    ctx.fill();
+  }
+</script>
+</body>
+</html>
