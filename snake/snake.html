@@ -196,6 +196,74 @@
       return false;
     }
   }
+
+
+  for(i=0;i<16;i++)
+  {
+    for(j=0;j<11;j++)
+    {
+      tmp=a[i][j];
+      if( tmp != 0)
+      {
+        for(k=1;k<5;k++)
+          if(a[i][j+k] == tmp)      /* 判断a[i][j+0]到Map[i][j+4]是否都相等（且不等于0） */
+
+            break;
+          else
+            sheng = tmp;
+
+      }
+    }
+  }
+  /* 判断所有纵行 */
+  for(i=0;i<11;i++)
+  {
+    for(j=0;j<16;j++)
+    {
+      tmp=a[i][j];
+      if( tmp != 0)
+      {
+        for(k=1;k<5;k++)  /* 判断a[i+0][j]到Map[i+4][j]是否都相等（且不等于0） */
+          if(a[i+k][j] != tmp)
+
+            break;
+          else
+            sheng = tmp;
+      }
+    }
+  }
+  /* 判断所有斜行（撇） */
+  for(i=5;i<16;i++)
+  {
+    for(j=0;j<11;j++)
+    {
+      tmp=a[i][j];
+      if( tmp != 0)
+      {
+        for(k=1;k<5;k++) /* 判断a[i-0][j+0]到Map[i-4][j+4]是否都相等（且不等于0） */
+          if(a[i-k][j+k] != tmp)
+            break;
+          else
+            sheng= tmp;
+      }
+    }
+  }
+  /* 判断所有斜行（捺） */
+  for(i=0;i<11;i++)
+  {
+    for(j=0;j<11;j++)
+    {
+      tmp=a[i][j];
+      if( tmp != 0)
+      {
+        for(k=1;k<5;k++)
+          if(a[i+k][j+k] != tmp)      /* 判断a[i+0][j+0]到Map[i+4][j+4]是否都相等（且不等于0） */
+            break;
+          else
+            sheng = tmp;
+      }
+    }
+  }
 </script>
 </body>
 </html>
