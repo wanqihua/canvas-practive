@@ -14,7 +14,7 @@
         margin: 0;
         padding: 0;
     }
-    /*这是背景，持续两秒*/
+    /*!*这是背景，持续两秒*!
     body:before{
         content:"";
         position:fixed;
@@ -43,7 +43,7 @@
             display:none;
         }
     }
-    /*这是前面的动画效果*/
+    !*这是前面的动画效果*!
     body:after{
         content:"";
         position:fixed;
@@ -78,7 +78,7 @@
             width:100vw;
             height:0;
         }
-    }
+    }*/
     body {
         margin: 0;
         padding: 0;
@@ -94,11 +94,12 @@
   (function(){
     let c = document.getElementById("c");
     let ctx = c.getContext("2d");
+    ctx.rotate(30*Math.PI/180);
     c.width = innerWidth;
     c.height = innerHeight;
     let lines = [];
-    let maxSpeed = 3;     // 雨的速度
-    let spacing = .2;     // 雨的数量
+    let maxSpeed = 1.5;     // 雨的速度
+    let spacing = 8;      // 雨的数量
     let xSpacing = 0;
     let n = innerWidth / spacing;
     let colors = ["#fff", "#f1f1f1", "#f2f2f2", "#999"];
@@ -107,7 +108,7 @@
       lines.push({
         x: xSpacing,
         y: Math.round(Math.random()*c.height),
-        width: .3,
+        width: 1,
         height: Math.round(innerHeight/(80+Math.random())),
         speed: (1 + Math.random())*maxSpeed,
         color: colors[Math.floor(Math.random() * colors.length)]

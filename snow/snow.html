@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+    main();
+    function main() {
+        var canvasEl = document.createElement("canvas");
+        canvasEl.id = "snowfall";
+        canvasEl.width = window.innerWidth;
+        canvasEl.height = document.body.clientHeight;
+        canvasEl.setAttribute("style", "position:absolute; top: 0; left: 0; z-index: 1; pointer-events: none;");
+        document.getElementsByTagName("body")[0].appendChild(canvasEl);
+        var ctx = canvasEl.getContext('2d');
+        canvasEl.width = canvasEl.clientWidth;
+        canvasEl.height = canvasEl.clientHeight;
+        var linelist = [];
+        var speedx = .6;          // 速度 X轴
+        var spacing = 14;         // 雪的数量 控制参数 越大雪量越小
+        var xSpacing = 0;
+        var num = canvasEl.width / spacing;  // 雪的数量
+        var colors = ["#fff", "#f1f1f1", "#f2f2f2", "#f3f3f3"];
+        window.onresize = function () {
+            canvasEl.width = window.innerWidth;
+            canvasEl.height = window.innerHeight;
+        }
+        for (var i = 0; i < num; i++){
+            xSpacing += spacing;
+            linelist.push({
+                speed: 0.6 + (Math.floor(Math.random() * 4)) / 8,                          // 雪花下落速度
+                posx: xSpacing,                                                            // 雪花x坐标
+                posy: Math.round(Math.random()*canvasEl.height),                           // 雪花y坐标
+                h: 1 + Math.random()*2,                                                    // 雪花的长度
+                color: colors[Math.floor(Math.random() * colors.length)]                   // 雪花的颜色
+            });
+        }
+
+        window.requestAnimationFrame(update);
+        function update() {
+            linelist.forEach(function (e) {
+                // 如果 雪花 y坐标 大于 可视区域的高度，设置die属性为true
+                if (e.posy <= canvasEl.height || e.posx <= canvasEl.width) {
+                    e.posy = e.posy + e.speed;
+                    e.posx = e.posx + e.speed * speedx;
+                }
+            });
+            for (var i = linelist.length - 1; i >= 0; i--) {
+                if(linelist[i].posy > canvasEl.height + 5){
+                    linelist[i].posy = 0 - linelist[i].h;
+                    linelist[i].posx = canvasEl.width * Math.random();
+                }
+                if(linelist[i].posx > canvasEl.width + 5){
+                    linelist[i].posx = -5;
+                    linelist[i].posy = canvasEl.height * Math.random();
+                }
+            }
+            // 渲染
+            render();
+            window.requestAnimationFrame(update);
+        }
+
+        // 渲染
+        function render() {
+            ctx.clearRect(0, 0, canvasEl.width, canvasEl.height)
+            ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+            ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
+            // 画snow效果
+            linelist.forEach(function (line) {
+                ctx.beginPath();
+                ctx.ellipse(line.posx, line.posy, line.h*.7, line.h*1.8, -Math.PI/6, 0, Math.PI*2);
+                ctx.closePath();
+                ctx.shadowBlur = line.h;
+                ctx.shadowColor = line.color;
+                ctx.fillStyle = line.color;
+                ctx.strokeStyle = line.color;
+                ctx.fill();
+            });
+        }
+    }
+</script>
+</body>
+</html>
+
